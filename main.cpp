@@ -3,18 +3,17 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE* vypis(FILE *f)
+FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je v zlozke
 {
-	char c;
-	int i=1,a;
-	if((f = fopen("file.txt", "r")) ==NULL)
+	char znak;
+	int cisrad=1;																								 	// cislo riadku
+	if((subor = fopen("file.txt", "r")) ==NULL)
 	printf("NEOTVORENY SUBOR\n");
 	else 
 	{
 	do
 	{
-		a=i%6;
-	switch (a) 	
+	switch (cisrad%6) 	
 		{
 		case 1:printf("meno priezvisko: ");break;
 		case 2:printf("SPZ: ");break;
@@ -24,21 +23,21 @@ FILE* vypis(FILE *f)
 		default:break;	
 		}
 		do{
-			c =getc(f);
-    		putchar(c); 
-			if(c ==EOF)  
+			znak =getc(subor);
+    		putchar(znak); 
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
-	i++;
-	}while (c!=EOF);
-	rewind (f);
+		}while (znak!=('\n')) ;
+	cisrad++;
+	}while (znak!=EOF);
+	rewind (subor);
 }
-return(f);
+return(subor);
 }
 
-void odmeny(FILE *f)
+void odmeny(FILE *subor)
 {
-	char c;
+	char znak;
 	int i=1,a;
 	int *p;
 	long int d,e;
@@ -48,15 +47,15 @@ void odmeny(FILE *f)
 	do
 	{
 		do{
-			c =getc(f);
-			if(c ==EOF)  
+			znak =getc(subor);
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 		i++;
-	}while (c!=EOF);
+	}while (znak!=EOF);
 	a=i/6;
 	p=(int*) malloc(sizeof(a));
-	rewind(f);
+	rewind(subor);
 	i=1;
 	
 		do
@@ -66,35 +65,35 @@ void odmeny(FILE *f)
 		{
 		case 3:
 			{
-				c =getc(f);
-				if(c=='0')
+				znak =getc(subor);
+				if(znak=='0')
 				*(p+(i/6))=1;
 				else
 				*(p+(i/6))=2;
 				i++;
-				c =getc(f);
+				znak =getc(subor);
 			};break;
 		case 5:
 			{
-				fscanf(f,"%li",&e);
+				fscanf(subor,"%li",&e);
 				if(d<(e+10000))
-				*(p+(i/6))=0;									// ->2 nove auto 1 stare auto 0 nedostane odmenu
+				*(p+(i/6))=0;									// ->2 nove auto 1 stare auto 0 nedostane odmenu  asfa
 				i++;
-				c =getc(f);
+				znak =getc(subor);
 			};break;		
 		
 		default:{
 			do{
-			c =getc(f);
-			if(c ==EOF)  
+			znak =getc(subor);
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 		i++;
 		}
 		break;
 		}
-	}while (c!=EOF);
-	rewind(f);
+	}while (znak!=EOF);
+	rewind(subor);
 	
 	i=0;
 	do
@@ -102,10 +101,10 @@ void odmeny(FILE *f)
 	if(*(p+(i/6))==0)
 		{
 		do{
-			c =getc(f);
-			if(c ==EOF)  
+			znak =getc(subor);
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 		i++;
 		}
 		else
@@ -116,57 +115,57 @@ void odmeny(FILE *f)
 		case 0:
 		{
 			do{
-			c =getc(f);
-			if(c =='\n')  
+			znak =getc(subor);
+			if(znak =='\n')  
 				break;  
-    		putchar(c); 
-			if(c ==EOF)  
+    		putchar(znak); 
+			if(znak ==EOF)  
 				break; 			              
-			}while (c!=('\n')) ;
+			}while (znak!=('\n')) ;
 		i++;
 		printf(" ");
 		}
 		break;
 		case 1:{
 			do{
-			c =getc(f);
-			if(c =='\n')  
+			znak =getc(subor);
+			if(znak =='\n')  
 				break;         
-    		putchar(c); 
-			if(c ==EOF)  
+    		putchar(znak); 
+			if(znak ==EOF)  
 				break; 		       
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 		i++;
 		printf(" ");
 		}break;
 		case 3:{
 			do{
-			fscanf(f,"%f",&b);
+			fscanf(subor,"%f",&b);
 			//printf("%f  ",b);
 			if(*(p+(i/6))==1) 
 			printf("%.2f",(b*0.022));
 			else
 			printf("%.2f",(b*0.015));
-			if(c ==EOF)  
-				break; 
-			c=getc(f);
-			putchar(c)	;		           
-		}while (c!=('\n')) ;
+			if(znak ==EOF)  
+			break; 
+			znak=getc(subor);
+			putchar(znak)	;		           
+		}while (znak!=('\n')) ;
 		i++;
 		}
 		break;
 		default:{
 			do{
-			c =getc(f);
-			if(c ==EOF)  
+			znak =getc(subor);
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 		i++;
 		}
 		break;
 		}
 }
-}while (c!=EOF);
+}while (znak!=EOF);
 }
 }
 
