@@ -77,7 +77,7 @@ void odmeny(FILE *subor)
 			{
 				fscanf(subor,"%li",&e);
 				if(d<(e+10000))
-				*(p+(i/6))=0;									// ->2 nove auto 1 stare auto 0 nedostane odmenu  asfa
+				*(p+(i/6))=0;									// ->2 nove auto 1 stare auto 0 nedostane odmenu 
 				i++;
 				znak =getc(subor);
 			};break;		
