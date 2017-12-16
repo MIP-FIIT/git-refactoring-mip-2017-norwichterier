@@ -291,26 +291,26 @@ void palindrom(char*pole_SPZ,FILE*subor)
 	}	
 }
 
-void pocet (char*p,FILE*f)
+void pocet (char*pole_SPZ,FILE*subor)
 {
 	int i=1,n,m,j,x,y,z,max;
-	char c;
-	rewind(f);
-	char *r;
+	char znak;
+	rewind(subor);
+	char *histogram;
 	do{
 		do{
-			c =getc(f);
+			znak =getc(subor);
   		
-			if(c ==EOF)  
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
+		}while (znak!=('\n')) ;
 	i++;
-	}while (c!=EOF);
+	}while (znak!=EOF);
 	n=i/6*3;
-	r=(char*) malloc(n*sizeof(char));
-	*r=*p;
-	*(r+1)=*(p+1);
-	*(r+2)='1';
+	histogram=(char*) malloc(n*sizeof(char));
+	*histogram=*pole_SPZ;
+	*(histogram+1)=*(pole_SPZ+1);
+	*(histogram+2)='1';
 	n=i/6;
 	
 	i=0;
@@ -321,9 +321,9 @@ void pocet (char*p,FILE*f)
 		j=0;
 		do
 		{
-		if((*(r+j*3))==(*(p+i*8))&&(*(r+j*3+1))==(*(p+i*8+1)))
+		if((*(histogram+j*3))==(*(pole_SPZ+i*8))&&(*(histogram+j*3+1))==(*(pole_SPZ+i*8+1)))
 		{
-		*(r+j*3+2)=*(r+j*3+2)+1;
+		*(histogram+j*3+2)=*(histogram+j*3+2)+1;
 		break;
 		}
 		else
@@ -334,27 +334,27 @@ void pocet (char*p,FILE*f)
 			{
 				j++;
 				m++;
-				*(r+j*3)=*(p+i*8);
-				*(r+j*3+1)=*(p+i*8+1);
-				*(r+j*3+2)='1';
+				*(histogram+j*3)=*(pole_SPZ+i*8);
+				*(histogram+j*3+1)=*(pole_SPZ+i*8+1);
+				*(histogram+j*3+2)='1';
 				break;
 			}
 		
 		}
 		}while (j!=(m-1));
 	}while(i!=(n-1));
-	max=*(r+2);
+	max=*(histogram+2);
 	n=0;
 	for(i=0;i<m;i++)
 	{
-		if(max<*(r+i*3+2))
+		if(max<*(histogram+i*3+2))
 		{
-		max=*(r+i*3+2);
+		max=*(histogram+i*3+2);
 		n=i;	
 		}
 		
 	}
-	printf("%c%c %c",*(r+n*3),*(r+n*3+1),*(r+n*3+2));
+	printf("%c%c %c",*(histogram+n*3),*(histogram+n*3+1),*(histogram+n*3+2));
 }
 
 int main()
