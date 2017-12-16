@@ -267,27 +267,25 @@ void spz (char*p,FILE *f)
 	}
 }
 
-void palindrom(char*p,FILE*f)
+void palindrom(char*pole_SPZ,FILE*subor)
 {
-int i=1,n;
-	char c;
-	rewind(f);
+int pocet_riadkov=1,pocet_zaznamov,poradie_zaznamu;
+	char znak;
+	rewind(subor);
 	do{
 		do{
-			c =getc(f);
+			znak =getc(subor);
   		
-			if(c ==EOF)  
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
-	i++;
-	}while (c!=EOF);
-	i=i/6;
-	n=i*8;
-		for(i=0;i<5;i++)
+		}while (znak!=('\n')) ;
+	pocet_riadkov++;
+	}while (znak!=EOF);
+	pocet_zaznamov=pocet_riadkov/6;
+		for(poradie_zaznamu=0;poradie_zaznamu<pocet_zaznamov;poradie_zaznamu++)
 	{
-	//printf("%c",*(p+i));
-	if((*(p+i*8))==(*(p+i*8+6))&&(*(p+i*8+1))==(*(p+i*8+5))&&(*(p+i*8+2))==(*(p+i*8+4)))			// 5 funkcia
-	printf("%c%c\n",*(p+i*8),*(p+i*8+1));
+	if((*(pole_SPZ+poradie_zaznamu*8))==(*(pole_SPZ+poradie_zaznamu*8+6))&&(*(pole_SPZ+poradie_zaznamu*8+1))==(*(pole_SPZ+poradie_zaznamu*8+5))&&(*(pole_SPZ+poradie_zaznamu*8+2))==(*(pole_SPZ+poradie_zaznamu*8+4)))			// 5 funkcia
+	printf("%c%c\n",*(pole_SPZ+poradie_zaznamu*8),*(pole_SPZ+poradie_zaznamu*8+1));
 	}	
 }
 
