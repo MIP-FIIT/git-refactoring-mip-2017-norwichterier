@@ -269,20 +269,22 @@ void spz (char*p,FILE *f)
 
 void palindrom(char*pole_SPZ,FILE*subor)
 {
-int pocet_riadkov=1,pocet_zaznamov,poradie_zaznamu;
+	int pocet_riadkov=1,pocet_zaznamov,poradie_zaznamu;
 	char znak;
 	rewind(subor);
-	do{
-		do{
+	
+	do
+	{
+		do
+		{
 			znak =getc(subor);
-  		
 			if(znak ==EOF)  
 				break;             
 		}while (znak!=('\n')) ;
-	pocet_riadkov++;
+		pocet_riadkov++;
 	}while (znak!=EOF);
 	pocet_zaznamov=pocet_riadkov/6;
-		for(poradie_zaznamu=0;poradie_zaznamu<pocet_zaznamov;poradie_zaznamu++)
+	for(poradie_zaznamu=0;poradie_zaznamu<pocet_zaznamov;poradie_zaznamu++)
 	{
 	if((*(pole_SPZ+poradie_zaznamu*8))==(*(pole_SPZ+poradie_zaznamu*8+6))&&(*(pole_SPZ+poradie_zaznamu*8+1))==(*(pole_SPZ+poradie_zaznamu*8+5))&&(*(pole_SPZ+poradie_zaznamu*8+2))==(*(pole_SPZ+poradie_zaznamu*8+4)))			// 5 funkcia
 	printf("%c%c\n",*(pole_SPZ+poradie_zaznamu*8),*(pole_SPZ+poradie_zaznamu*8+1));
