@@ -6,15 +6,14 @@
 FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je v zlozke
 {
 	char znak;
-	int cisrad=1,a;																								// cislo riadku
+	int cisrad=1;																							// cislo riadku
 	if((subor = fopen("file.txt", "r")) ==NULL)
 	printf("NEOTVORENY SUBOR\n");
 	else 
 	{
 	do
 	{
-		a=cisrad%6;
-		switch (a) 	
+		switch (cisrad%6) 	
 		{
 			case 1:printf("meno priezvisko: ");break;
 			case 2:printf("SPZ: ");break;
@@ -23,6 +22,7 @@ FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je 
 			case 5:printf("datum: ");break;
 			default:break;	
 		}
+		
 		do
 		{
 			znak =getc(subor);
@@ -185,57 +185,60 @@ void odmeny(FILE *subor)
 	}while (znak!=EOF);
 }
 
-char* neviem_co(FILE *f)
+char* nacitaj(FILE *subor)
 {
-	char c;
-	int i=1,j,n,a; 																
-	char *p;			
-	rewind(f);
-	a=sizeof(*p);
-	//printf("%d\n",a);
-	if (sizeof(*p)!=1)
-	free(p);
+	char znak;
+	int riadok,poradie_znaku,pocet_riadkov,velkost_pola; 																
+	char *pole_SPZ;	
+			
+	rewind(subor);
+	if (sizeof(*pole_SPZ)!=1)
+		free(pole_SPZ);
 	do
 	{
-		do{
-			c =getc(f);
-			if(c ==EOF)  
-				break;             
-		}while (c!=('\n')) ;
-		i++;
-	}while (c!=EOF);	
-	n=i/6*8+1;
-	p = (char*) malloc(n*sizeof(char));
-	i=0;
-	rewind(f);
-	j=-1;
-	do
-	{
-		a=i%6;
-	switch (a) 	
+		do
 		{
-		case 1:{	
-		do{
-			j++;
-			*(p+j) =getc(f);
-			//putchar(*(p+j));
-			if(*(p+j) ==EOF)  
-				break; 	            																// 3 funkcia
-		}while (*(p+j)!=('\n')) ;
-		i++;
-		}
-		break;
-		default:
-		{	do{
-			c =getc(f);	
-			if(c ==EOF)  
-				break;  	           
-		}while (c!=('\n')) ;	
-	i++;
-	}break;	
+			znak=getc(subor);
+			if(znak ==EOF)  
+				break;             
+		}while (znak!=('\n')) ;
+		pocet_riadkov++;
+	}while (znak!=EOF);	
+	velkost_pola=pocet_riadkov/6*8+1;
+	pole_SPZ = (char*) malloc(velkost_pola*sizeof(char));
+	riadok=0;
+	poradie_znaku=-1;
+	rewind(subor);
+	
+	do
+	{
+		switch (riadok%6) 	
+		{
+			case 1:
+			{	
+				do
+				{
+					poradie_znaku++;
+					*(pole_SPZ+poradie_znaku) =getc(subor);
+					if(*(pole_SPZ+poradie_znaku) ==EOF)  
+						break; 	            																
+				}while (*(pole_SPZ+poradie_znaku)!=('\n')) ;
+				riadok++;
+			}break;
+		
+			default:
+			{	
+				do
+				{
+					znak =getc(subor);	
+					if(znak ==EOF)  
+						break;  	           
+				}while (znak!=('\n')) ;	
+				riadok++;
+			}break;	
 		}	
-	}while(c!=EOF);
-return(p);
+	}while(znak!=EOF);
+	return(pole_SPZ);
 }
 
 void spz (char*p,FILE *f)
@@ -367,7 +370,7 @@ int main()
  		{
  			case 'v':f=vypis(f);i=1;break;
  			case 'o':if(i==1)odmeny(f);break;
- 			case 'n':if(i==1) {p=neviem_co(f);j=1;}break;
+ 			case 'n':if(i==1) {p=nacitaj(f);j=1;}break;
  			case 's':if(j==1) spz(p,f);else printf("pole nie je vytvorene");break;
  			case 'p':if(j==1) palindrom(p,f);else printf("pole nie je vytvorene");break;
  			case 'z':if(j==1) pocet(p,f);else printf("pole nie je vytvorene");break;													//nefunguje tak ako ma
