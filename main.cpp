@@ -3,17 +3,17 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE* vypis(FILE *f)
+FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je v zlozke
 {
-	char c;
-	int i=1,a;
-	if((f = fopen("file.txt", "r")) ==NULL)
+	char znak;
+	int cisrad=1,a;																								// cislo riadku
+	if((subor = fopen("file.txt", "r")) ==NULL)
 	printf("NEOTVORENY SUBOR\n");
-	else
+	else 
 	{
 	do
 	{
-		a=i%6;
+		a=cisrad%6;
 	switch (a) 	
 		{
 		case 1:printf("meno priezvisko: ");break;
@@ -24,16 +24,16 @@ FILE* vypis(FILE *f)
 		default:break;	
 		}
 		do{
-			c =getc(f);
-    		putchar(c); 
-			if(c ==EOF)  
+			znak =getc(subor);
+    		putchar(znak); 
+			if(znak ==EOF)  
 				break;             
-		}while (c!=('\n')) ;
-	i++;
-	}while (c!=EOF);
-	rewind (f);
+		}while (znak!=('\n')) ;
+	cisrad++;
+	}while (znak!=EOF);
+	rewind (subor);
 }
-return(f);
+return(subor);
 }
 
 void odmeny(FILE *f)
@@ -338,6 +338,7 @@ void pocet (char*p,FILE*f)
 	}
 	printf("%c%c %c",*(r+n*3),*(r+n*3+1),*(r+n*3+2));
 }
+
 int main()
 {
 	int i=0,j=0;
