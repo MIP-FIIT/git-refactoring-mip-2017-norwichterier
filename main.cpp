@@ -6,9 +6,9 @@
 FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je v zlozke
 {
 	char znak;
-	int cisrad=1;																							// cislo riadku
+	int cisrad=1;																								// cislo riadku
 	if((subor = fopen("file.txt", "r")) ==NULL)
-	printf("NEOTVORENY SUBOR\n");
+		printf("NEOTVORENY SUBOR\n");
 	else 
 	{
 		do
@@ -21,21 +21,21 @@ FILE* vypis(FILE *subor)																							//pointer na txt subor, ktory je 
 				case 4:printf("cena: ");break;
 				case 5:printf("datum: ");break;
 				default:break;	
-			}
+			}	
 		
 			do
 			{
 				znak =getc(subor);
     			putchar(znak); 
 				if(znak ==EOF)  
-				break;             
+					break;             
 			}while (znak!=('\n')) ;
 			cisrad++;
 		}while (znak!=EOF);
 		rewind (subor);
 	}
-printf("\n");
-return(subor);
+	printf("\n");
+	return(subor);
 }
 
 void odmeny(FILE *subor)
@@ -57,15 +57,14 @@ void odmeny(FILE *subor)
 			if(znak ==EOF)  
 				break;             
 		}while (znak!=('\n'));
-		
 		pocet_zaznamov++;
 	}while (znak!=EOF);
 	
 	pocet_zaznamov=pocet_zaznamov/6;
 	typ_auta=(int*) malloc(sizeof(pocet_zaznamov));
 	rewind(subor);
-	
 	cislo_riadku=1;
+	
 	do
 	{
 		
@@ -101,13 +100,12 @@ void odmeny(FILE *subor)
 					break;             
 				}while (znak!=('\n')) ;
 				cislo_riadku++;
-			}break;
-			
+			}break;	
 		}
 	}while (znak!=EOF);
 	rewind(subor);
-	
 	cislo_riadku=0;
+	
 	do
 	{	
 		if(*(typ_auta+(cislo_riadku/6))==0)
@@ -244,7 +242,7 @@ char* nacitaj(FILE *subor)
 
 void spz (char*pole_SPZ,FILE *subor)
 {
-	int i=1,n;
+	int pocet_riadkov=1,pocet_zaznamov,poradie_znaku,pocet_znakov;
 	char znak;
 	rewind(subor);
 	do{
@@ -254,16 +252,16 @@ void spz (char*pole_SPZ,FILE *subor)
 			if(znak ==EOF)  
 				break;             
 		}while (znak!=('\n')) ;
-	i++;
+	pocet_riadkov++;
 	}while (znak!=EOF);
-	i=i/6;
-	n=i*8;
-	for(i=0;i<n;i++)
+	pocet_zaznamov=pocet_riadkov/6;
+	pocet_znakov=pocet_zaznamov*8;
+	for(poradie_znaku=0;poradie_znaku<pocet_znakov;poradie_znaku++)
 	{
-	printf("%c",*(pole_SPZ+i));																			//4 funkcia
-	if(i%8==1)
+	printf("%c",*(pole_SPZ+poradie_znaku));																			//4 funkcia
+	if(poradie_znaku%8==1)
 	printf(" ");
-	if(i%8==4)
+	if(poradie_znaku%8==4)
 	printf(" ");
 	}
 }
@@ -294,91 +292,92 @@ void palindrom(char*pole_SPZ,FILE*subor)
 
 void pocet (char*pole_SPZ,FILE*subor)
 {
-	int i=1,n,m,j,x,y,z,max;
+	int pocet_riadkov=1,velkost_histogramu,pocet_zaznamov,pocet_prv_his,poradie_SPZ_v_poli,poradie_max_prvku_v_his,poradie_SPZ_histogram,poradie_prv_v_hist,max;
 	char znak;
-	rewind(subor);
 	char *histogram;
-	do{
-		do{
+	rewind(subor);
+	
+	do
+	{
+		do
+		{
 			znak =getc(subor);
-  		
 			if(znak ==EOF)  
 				break;             
 		}while (znak!=('\n')) ;
-	i++;
+		pocet_riadkov++;
 	}while (znak!=EOF);
-	n=i/6*3;
-	histogram=(char*) malloc(n*sizeof(char));
+	pocet_zaznamov=pocet_riadkov/6;
+	velkost_histogramu=pocet_zaznamov*3;
+	histogram=(char*) malloc(velkost_histogramu*sizeof(char));
+	
 	*histogram=*pole_SPZ;
 	*(histogram+1)=*(pole_SPZ+1);
 	*(histogram+2)='1';
-	n=i/6;
-	
-	i=0;
-	m=1;
+	poradie_SPZ_v_poli=0;
+	pocet_prv_his=1;
 	do
 	{
-		i++;
-		j=0;
+		poradie_SPZ_v_poli++;
+		poradie_SPZ_histogram=0;
 		do
 		{
-		if((*(histogram+j*3))==(*(pole_SPZ+i*8))&&(*(histogram+j*3+1))==(*(pole_SPZ+i*8+1)))
-		{
-		*(histogram+j*3+2)=*(histogram+j*3+2)+1;
-		break;
-		}
-		else
-		{
-			if(j!=(m-1))
-			j++;
-			else
+			if((*(histogram+poradie_SPZ_histogram*3))==(*(pole_SPZ+poradie_SPZ_v_poli*8))&&(*(histogram+poradie_SPZ_histogram*3+1))==(*(pole_SPZ+poradie_SPZ_v_poli*8+1)))
 			{
-				j++;
-				m++;
-				*(histogram+j*3)=*(pole_SPZ+i*8);
-				*(histogram+j*3+1)=*(pole_SPZ+i*8+1);
-				*(histogram+j*3+2)='1';
+				*(histogram+poradie_SPZ_histogram*3+2)=*(histogram+poradie_SPZ_histogram*3+2)+1;
 				break;
 			}
-		
-		}
-		}while (j!=(m-1));
-	}while(i!=(n-1));
+			else
+			{
+				if(poradie_SPZ_histogram!=(pocet_prv_his-1))
+					poradie_SPZ_histogram++;
+				else
+				{
+					poradie_SPZ_histogram++;
+					pocet_prv_his++;
+					*(histogram+poradie_SPZ_histogram*3)=*(pole_SPZ+poradie_SPZ_v_poli*8);
+					*(histogram+poradie_SPZ_histogram*3+1)=*(pole_SPZ+poradie_SPZ_v_poli*8+1);
+					*(histogram+poradie_SPZ_histogram*3+2)='1';
+					break;
+				}
+			}
+		}while (poradie_SPZ_histogram!=(pocet_prv_his-1));
+	}while(poradie_SPZ_v_poli!=(pocet_zaznamov-1));
 	max=*(histogram+2);
-	n=0;
-	for(i=0;i<m;i++)
+	poradie_max_prvku_v_his=0;
+	
+	for(poradie_prv_v_hist=0;poradie_prv_v_hist<pocet_prv_his;poradie_prv_v_hist++)
 	{
-		if(max<*(histogram+i*3+2))
+		if(max<*(histogram+poradie_prv_v_hist*3+2))
 		{
-		max=*(histogram+i*3+2);
-		n=i;	
-		}
-		
+			max=*(histogram+poradie_prv_v_hist*3+2);
+			poradie_max_prvku_v_his=poradie_prv_v_hist;	
+		}	
 	}
-	printf("%c%c %c \n",*(histogram+n*3),*(histogram+n*3+1),*(histogram+n*3+2));
+	printf("%c%c %c \n",*(histogram+poradie_max_prvku_v_his*3),*(histogram+poradie_max_prvku_v_his*3+1),*(histogram+poradie_max_prvku_v_his*3+2));
 }
 
 int main()
 {
-	int i=0,j=0;
-	char x;
-	char *p;
-	FILE *f;
+	int otvoreny_subor=0,vytvorene_pole=0;
+	char znak;
+	char *pole_SPZ;
+	FILE *subor;
 	do
 	{
-		x=getchar ();
- 		switch(x)
+		znak=getchar ();
+ 		switch(znak)
  		{
- 			case 'v':f=vypis(f);i=1;break;
- 			case 'o':if(i==1)odmeny(f);break;
- 			case 'n':if(i==1) {p=nacitaj(f);j=1;}break;
- 			case 's':if(j==1) spz(p,f);else printf("pole nie je vytvorene \n");break;
- 			case 'p':if(j==1) palindrom(p,f);else printf("pole nie je vytvorene \n");break;
- 			case 'z':if(j==1) pocet(p,f);else printf("pole nie je vytvorene \n");break;													//funguje tak ako ma
+ 			case 'v':subor=vypis(subor);otvoreny_subor=1;break;
+ 			case 'o':if(otvoreny_subor==1)odmeny(subor);break;
+ 			case 'n':if(otvoreny_subor==1) {pole_SPZ=nacitaj(subor);vytvorene_pole=1;}break;
+ 			case 's':if(vytvorene_pole==1) spz(pole_SPZ,subor);else printf("pole nie je vytvorene \n");break;
+ 			case 'p':if(vytvorene_pole==1) palindrom(pole_SPZ,subor);else printf("pole nie je vytvorene \n");break;
+ 			case 'z':if(vytvorene_pole==1) pocet(pole_SPZ,subor);else printf("pole nie je vytvorene \n");break;													//funguje tak ako ma
  			default:break;
  		}
-	}while (x!='k');
-	if(i==1)
-	fclose(f);
-return 0;	
+	}while (znak!='k');
+	if(otvoreny_subor==1)
+		fclose(subor);
+	return 0;	
 }
